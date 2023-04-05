@@ -1,7 +1,9 @@
+import 'package:escola/db/db_aluno.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:escola/db/db_matriculados.dart';
+import 'package:escola/db/db_aluno.dart';
 
 class Matriculados extends StatefulWidget {
   const Matriculados({super.key});
@@ -12,12 +14,21 @@ class Matriculados extends StatefulWidget {
 
 class _MatriculadosState extends State<Matriculados> {
   List<Map<String, dynamic>> _allMatriculados = [];
+  List<Map<String, dynamic>> _allAlunos = [];
 
   // Pegar todos os dados da tabela matriculados
   void _getMatriculados() async {
     final matriculados = await SQLHelperMatriculados.getAllData();
     setState(() {
       _allMatriculados = matriculados;
+    });
+  }
+
+  // Pegar todos os alunos
+  void _getAlunos() async {
+    final alunos = await SQLHelperAluno.getAllData();
+    setState(() {
+      _allAlunos = alunos;
     });
   }
 
@@ -38,12 +49,12 @@ class _MatriculadosState extends State<Matriculados> {
           itemBuilder: (context, index) => Card(
                 margin: EdgeInsets.all(15),
                 child: ListTile(
-                  title: Padding(
+                  title: const Padding(
                     padding: EdgeInsets.symmetric(vertical: 5),
                     child: Text(
-                      "Matrícula: ${_allMatriculados[index]['aluno_id']}",
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold),
+                      "Nome: Nome do aluno",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ),
                   subtitle: Padding(
@@ -80,6 +91,5 @@ class _MatriculadosState extends State<Matriculados> {
   void removeAluno(int aluId, String discCOD) async {
     await SQLHelperMatriculados.deleteData(discCOD, aluId);
     _getMatriculados();
-    print("Excluido");
   }
 }

@@ -27,8 +27,14 @@ class SQLHelperMatriculados {
         whereArgs: [disciplina_cod, aluno_id]);
   }
 
-  static Future<void> deleteData(String disciplina_cod, int aluno_id) async {
+  static Future<void> deleteData(String? disciplina_cod, int aluno_id) async {
     final db = await CreateTables.db();
+
+    if (disciplina_cod == null) {
+      await db
+          .delete('matriculados', where: "aluno_id = ?", whereArgs: [aluno_id]);
+    }
+
     try {
       await db.delete('matriculados',
           where: "disciplina_cod = ? AND aluno_id = ?",

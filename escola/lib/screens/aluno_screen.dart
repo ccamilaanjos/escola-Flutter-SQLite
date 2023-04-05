@@ -1,4 +1,5 @@
 import 'package:escola/db/db_aluno.dart';
+import 'package:escola/db/db_matriculados.dart';
 import 'package:flutter/material.dart';
 
 class Aluno extends StatefulWidget {
@@ -48,6 +49,7 @@ class _AlunoState extends State<Aluno> {
   // Deletar
   void _deleteData(int id) async {
     await SQLHelperAluno.deleteData(id);
+    await SQLHelperMatriculados.deleteData(null, id);
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       backgroundColor: Colors.redAccent,
       content: Text('Aluno excluído'),
